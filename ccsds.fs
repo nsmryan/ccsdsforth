@@ -1,5 +1,3 @@
-here constant starthere
-
 6 constant PRILENGTH
 0x07FF constant APIDMASK
 0xE000 constant VERSIONMASK
@@ -10,7 +8,7 @@ here constant starthere
 0x3FFF constant SEQUENCEMASK 
 
 : c@++  dup c@ swap 1+ ;
-assert( 0xFF here c! here c@++ here - 1 = swap 0xFF = and )
+assert( 0xFF here c! here c@++ here 1+ = swap 0xFF = and )
 
 : c!++  tuck c! 1+ ;
 assert( 0x00 here c!  0xFF here c!++ here - 1 = here c@ 0xFF = and )
@@ -39,7 +37,7 @@ assert( 0x0304 here w! here c@ 3 = here 1 + c@ 4 = and )
 : >packettype    swap 12 lshift over w@ PACKETTYPEMASK invert and or swap w! ;
 : >secheaderflag swap 11 lshift over w@ SECHEADERMASK invert and or swap w! ;
 
-: >seqflag       1 words + swap over w@ SEQFLAGMASK invert and or swap w! ;
+: >seqflag       1 words + swap 14 lshift over w@ SEQFLAGMASK invert and or swap w! ;
 : >sequence      1 words + swap over w@ SEQUENCEMASK invert and or swap w! ;
 
 : >length        2 words + w! ;
@@ -53,5 +51,3 @@ assert( here PRILENGTH erase 0x0003 here >seqflag here seqflag> 0x0003 = )
 assert( here PRILENGTH erase 0x3FFF here >sequence here sequence> 0x3FFF = )
 
 assert( here PRILENGTH erase 0xFFFF here >length here length> 0xFFFF = )
-
-here constant endhere

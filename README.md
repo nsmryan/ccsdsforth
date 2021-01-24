@@ -22,5 +22,18 @@ The nice thing about Forth is that I don't feel as pressured to wrap things
 up as nicely- there are other options for this kind of library which
 create abstractions or use generic bit field manipulation words to extract
 or lay down sections of bits, but I don't feel like it would be Forthy
-to do this. Instead, once this library was used a bit and shown to work,
-the tiny codebase would represent just a bit of 
+to do this. 
+
+
+Compared to other implementations, such as my Zig and Rust ones, my
+Forth code is smaller, denser, and with much more code per line.
+
+I liked being able to sprinkle asserts into the code, as with Zig
+and Rust, although in this case I'm not using any kind of test framework,
+not even a build in one, just asserts as test cases. This nice
+thing here is that unless you ask for them to be turned off,
+you must pass the test suite in order to even use the code.
+
+
+In a very unscientific series of tests, I found that this code took about
+2.5 ms to compile on my laptop. 
