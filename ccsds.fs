@@ -7,6 +7,7 @@
 0xC000 constant SEQFLAGMASK 
 0x3FFF constant SEQUENCEMASK 
 
+
 : c@++  dup c@ swap 1+ ;
 
 : c!++  tuck c! 1+ ;
