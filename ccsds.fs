@@ -8,16 +8,12 @@
 0x3FFF constant SEQUENCEMASK 
 
 : c@++  dup c@ swap 1+ ;
-assert( 0xFF here c! here c@++ here 1+ = swap 0xFF = and )
 
 : c!++  tuck c! 1+ ;
-assert( 0x00 here c!  0xFF here c!++ here - 1 = here c@ 0xFF = and )
 
 : w@ c@++ c@ swap 8 lshift or ;
-assert( 1 here c! 2 here 1+ c! here w@ 0x0102 = )
 
 : w! over 0xFF00 and 8 rshift swap c!++ swap 0xFF and swap c! ;
-assert( 0x0304 here w! here c@ 3 = here 1 + c@ 4 = and )
 
 : words 2 * ;
 
@@ -31,23 +27,14 @@ assert( 0x0304 here w! here c@ 3 = here 1 + c@ 4 = and )
 
 : length>        2 words + w@ ;
 
+: masked         ( n n' mask -- n | (n' & ~mask ) invert and or ;
+: >apid          tuck w@ APIDMASK masked swap w! ;
+: >version       swap 13 lshift over w@ VERSIONMASK masked swap w! ;
+: >packettype    swap 12 lshift over w@ PACKETTYPEMASK masked swap w! ;
+: >secheaderflag swap 11 lshift over w@ SECHEADERMASK masked swap w! ;
 
-: >apid          swap over w@ APIDMASK invert and or swap w! ;
-: >version       swap 13 lshift over w@ VERSIONMASK invert and or swap w! ;
-: >packettype    swap 12 lshift over w@ PACKETTYPEMASK invert and or swap w! ;
-: >secheaderflag swap 11 lshift over w@ SECHEADERMASK invert and or swap w! ;
-
-: >seqflag       1 words + swap 14 lshift over w@ SEQFLAGMASK invert and or swap w! ;
-: >sequence      1 words + swap over w@ SEQUENCEMASK invert and or swap w! ;
+: >seqflag       1 words + swap 14 lshift over w@ SEQFLAGMASK masked swap w! ;
+: >sequence      1 words + swap over w@ SEQUENCEMASK masked swap w! ;
 
 : >length        2 words + w! ;
 
-assert( here PRILENGTH erase 0x07FF here >apid here apid> 0x07FF = )
-assert( here PRILENGTH erase 0x0007 here >version here version> 0x0007 = )
-assert( here PRILENGTH erase 0x0001 here >packettype here packettype> 0x0001 = )
-assert( here PRILENGTH erase 0x0001 here >secheaderflag here secheaderflag> 0x0001 = )
-
-assert( here PRILENGTH erase 0x0003 here >seqflag here seqflag> 0x0003 = )
-assert( here PRILENGTH erase 0x3FFF here >sequence here sequence> 0x3FFF = )
-
-assert( here PRILENGTH erase 0xFFFF here >length here length> 0xFFFF = )
