@@ -51,7 +51,7 @@ the APID and sequence flag, resulting in a valid packet with 1 data byte:
 1 constant APID
 3 constant UNSEGMENTED
 PRILENGTH 1+ allot constant packet
-packet PRILENGTH erase
+packet PRILENGTH 1+ erase
 APID packet >apid
 UNSEGMENTED packet >seqflag
 ```
